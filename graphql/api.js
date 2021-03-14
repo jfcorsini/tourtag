@@ -148,3 +148,45 @@ export const createTag = async (identifier) => {
 
   return data;
 };
+
+export const updateTag = async (currentTag, newTagState) => {
+  const { _id, _ts, ...tag } = currentTag;
+
+  const query = `mutation updateTag($id: ID!, $identifier: String!, $isInTour: Boolean!, $jsonData: String!, $startPort: Port, $destinationPort: Port) {
+    updateTag(id: $id, data: {
+      identifier: $identifier,
+      jsonData: $jsonData,
+      isInTour: $isInTour,
+      startPort: $startPort,
+      destinationPort: $destinationPort,
+    }) {
+      _id
+      _ts
+      identifier
+      isInTour
+      jsonData
+      departureTime
+      startPort
+      destinationPort
+    }
+  }`;
+
+  const res = await fetch(process.env.NEXT_PUBLIC_FAUNADB_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_FAUNADB_SECRET}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        ...tag,
+        ...newTagState,
+      },
+    }),
+  });
+  const data = await res.json();
+
+  return data;
+};
