@@ -1,4 +1,4 @@
-export default function GuestbookEntryDivider() {
+export default function TagDivider() {
   return (
     <>
       <hr />

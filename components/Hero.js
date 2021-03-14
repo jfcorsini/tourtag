@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTags, createTag } from "../graphql/api";
 import Header from "./Header";
-import GuestbookEntry from "./GuestbookEntry";
-import GuestbookEntryDivider from "./GuestbookEntryDivider";
+import Tag from "./Tag";
+import TagDivider from "./TagDivider";
 import {
   hero,
   heroContainer,
@@ -15,22 +15,22 @@ import {
 } from "../styles/hero";
 
 function getTags(data) {
-  return data ? data.tags.data : [];
+  return data ? data.tags.data.reverse() : [];
 }
 
 export default function Hero(props) {
   const { data, errorMessage } = useTags();
-  const [entries, setEntries] = useState([]);
+  const [tags, setTags] = useState([]);
   const [tagIdentifier, setTagIdentifier] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!entries.length) {
-      setEntries(getTags(data));
+    if (!tags.length) {
+      setTags(getTags(data));
     }
-  }, [data, entries.length]);
+  }, [data, tags.length]);
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     if (tagIdentifier.trim().length === 0) {
       alert("Please provide a valid twitter handle :)");
@@ -39,9 +39,9 @@ export default function Hero(props) {
     setSubmitting(true);
     createTag(tagIdentifier)
       .then((data) => {
-        entries.unshift(data.data.createTag);
+        tags.unshift(data.data.createTag);
         setTagIdentifier("");
-        setEntries(entries);
+        setTags(tags);
         setSubmitting(false);
       })
       .catch((error) => {
@@ -49,16 +49,39 @@ export default function Hero(props) {
         alert("Something bad happened 🤷‍♀️");
         setSubmitting(false);
       });
-  }
+  };
 
-  function handleTagIdentifier(event) {
-    setTagIdentifier(event.target.value);
-  }
+  const handleTagIdentifier = useCallback(
+    (event) => {
+      setTagIdentifier(event.target.value);
+    },
+    [setTagIdentifier]
+  );
 
   return (
     <div className={heroContainer.className}>
       <div className={hero.className}>
         <Header />
+      </div>
+      <div className={heroEntries.className}>
+        {errorMessage ? (
+          <p>{errorMessage}</p>
+        ) : !data ? (
+          <p>Loading tags...</p>
+        ) : (
+          tags.map((tag, index) => {
+            const date = new Date(tag._ts / 1000);
+            return (
+              <div key={tag._id}>
+                <Tag tagData={tag} date={date} />
+                <TagDivider />
+              </div>
+            );
+          })
+        )}
+      </div>
+      <div className={hero.className}>
+        <h1> Create new tag</h1>
         <form className={heroForm.className} onSubmit={handleSubmit}>
           <fieldset
             className={heroFormFieldset.className}
@@ -78,27 +101,6 @@ export default function Hero(props) {
             />
           </fieldset>
         </form>
-      </div>
-      <div className={heroEntries.className}>
-        {errorMessage ? (
-          <p>{errorMessage}</p>
-        ) : !data ? (
-          <p>Loading entries...</p>
-        ) : (
-          entries.map((entry, index, allEntries) => {
-            const date = new Date(entry._ts / 1000);
-            return (
-              <div key={entry._id}>
-                <GuestbookEntry
-                  twitter_handle={entry.twitter_handle}
-                  story={entry.story}
-                  date={date}
-                />
-                {index < allEntries.length - 1 && <GuestbookEntryDivider />}
-              </div>
-            );
-          })
-        )}
       </div>
       {heroEntries.styles}
       {heroFormSubmitButton.styles}

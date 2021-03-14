@@ -86,6 +86,12 @@ export const createTag = async (identifier) => {
     }) {
       _id
       _ts
+      identifier
+      isInTour
+      jsonData
+      departureTime
+      startPort
+      destinationPort
     }
   }`;
 
