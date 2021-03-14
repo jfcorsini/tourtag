@@ -16,8 +16,8 @@ type Tag {
   identifier: String! @unique
   isInTour: Boolean!
   jsonData: String! # A stringified JSON
-  startPort: Port
-  destinationPort: Port
+  startPort: Port!
+  destinationPort: Port!
   departureTime: Time
 }
 
