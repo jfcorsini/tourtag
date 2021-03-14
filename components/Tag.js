@@ -14,7 +14,6 @@ import {
 } from "../styles/guestbookentry";
 
 export default function Tag({ tagData, date }) {
-  console.log("Inside tag component", tagData);
   const jsonData = JSON.parse(tagData.jsonData);
   return (
     <>
