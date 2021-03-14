@@ -24,10 +24,6 @@ export default function Hero(props) {
   const [tagIdentifier, setTagIdentifier] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // TODO: Allow use to choose start and destination ports
-  const startPort = "HEL";
-  const destinationPort = "TUR";
-
   useEffect(() => {
     if (!entries.length) {
       setEntries(getTags(data));
@@ -41,7 +37,7 @@ export default function Hero(props) {
       return;
     }
     setSubmitting(true);
-    createTag(tagIdentifier, startPort, destinationPort)
+    createTag(tagIdentifier)
       .then((data) => {
         entries.unshift(data.data.createTag);
         setTagIdentifier("");

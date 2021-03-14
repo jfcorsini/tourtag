@@ -77,12 +77,10 @@ export const useTags = () => {
 | Learn more about GraphQL mutations: https://graphql.org/learn/queries/#mutations
 |--------------------------------------------------
 */
-export const createTag = async (identifier, startPort, destinationPort) => {
-  const query = `mutation createTag($identifier: String!, $isInTour: Boolean!, $startPort: Port!, $destinationPort: Port!, $jsonData: String!) {
+export const createTag = async (identifier) => {
+  const query = `mutation createTag($identifier: String!, $isInTour: Boolean!, $jsonData: String!) {
     createTag(data: {
       identifier: $identifier,
-      startPort: $startPort,
-      destinationPort: $destinationPort,
       jsonData: $jsonData,
       isInTour: $isInTour,
     }) {
@@ -102,8 +100,6 @@ export const createTag = async (identifier, startPort, destinationPort) => {
       query,
       variables: {
         identifier,
-        startPort,
-        destinationPort,
         isInTour: false,
         jsonData: JSON.stringify([]),
       },
