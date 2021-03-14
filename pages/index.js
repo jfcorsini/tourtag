@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import Footer from '../components/Footer'
-import Hero from '../components/Hero'
+import Head from "next/head";
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
 
 const Guestbook = (props) => {
   return (
@@ -35,7 +35,7 @@ const Guestbook = (props) => {
         }
       `}</style>
     </>
-  )
-}
+  );
+};
 
-export default Guestbook
+export default Guestbook;

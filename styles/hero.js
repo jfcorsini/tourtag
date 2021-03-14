@@ -1,4 +1,4 @@
-import css from 'styled-jsx/css'
+import css from "styled-jsx/css";
 
 export const heroContainer = css.resolve`
   div {
@@ -8,7 +8,7 @@ export const heroContainer = css.resolve`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 
 export const hero = css.resolve`
   div {
@@ -17,7 +17,7 @@ export const hero = css.resolve`
     text-align: center;
     flex-basis: 30%;
   }
-`
+`;
 
 export const heroForm = css.resolve`
   form {
@@ -29,14 +29,14 @@ export const heroForm = css.resolve`
     width: 50%;
     margin-bottom: 60px;
   }
-`
+`;
 
 export const heroFormFieldset = css.resolve`
   fieldset {
     outline: none;
     border: none;
   }
-`
+`;
 export const heroFormTextArea = css.resolve`
   textarea {
     display: block;
@@ -56,7 +56,7 @@ export const heroFormTextArea = css.resolve`
     outline: none !important;
     border: 1.2px solid rgba(50, 63, 203);
   }
-`
+`;
 export const heroFormTwitterInput = css.resolve`
   input {
     display: inline-block;
@@ -72,7 +72,7 @@ export const heroFormTwitterInput = css.resolve`
     outline: none !important;
     border: 1.2px solid rgba(50, 63, 203);
   }
-`
+`;
 export const heroFormSubmitButton = css.resolve`
   input {
     width: 45%;
@@ -88,7 +88,7 @@ export const heroFormSubmitButton = css.resolve`
   input:hover {
     cursor: pointer;
   }
-`
+`;
 export const heroEntries = css.resolve`
   div {
     flex-grow: 0;
@@ -112,4 +112,4 @@ export const heroEntries = css.resolve`
   div::-webkit-scrollbar-thumb {
     background: rgba(50, 63, 203, 0.5);
   }
-`
+`;

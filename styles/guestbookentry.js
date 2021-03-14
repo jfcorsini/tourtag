@@ -1,4 +1,4 @@
-import css from 'styled-jsx/css'
+import css from "styled-jsx/css";
 
 export const guestbookEntry = css.resolve`
   div {
@@ -8,14 +8,14 @@ export const guestbookEntry = css.resolve`
     align-items: center;
     margin-bottom: 30px;
   }
-`
+`;
 export const guestbookEntryUserDetail = css.resolve`
   div {
     flex-shrink: 0;
     flex-basis: 30%;
     text-align: center;
   }
-`
+`;
 export const guestbookEntryUserDetailAvatar = css.resolve`
   div {
     display: inline-block;
@@ -24,7 +24,7 @@ export const guestbookEntryUserDetailAvatar = css.resolve`
     width: 70px;
     height: 70px;
   }
-`
+`;
 export const guestbookEntryUserDetailAvatarImg = css.resolve`
   img {
     position: absolute;
@@ -44,7 +44,7 @@ export const guestbookEntryUserDetailAvatarImg = css.resolve`
     opacity: 1;
     border-color: rgba(50, 63, 203);
   }
-`
+`;
 export const guestbookEntryUserDetailBiolink = css.resolve`
   a {
     display: block;
@@ -57,7 +57,7 @@ export const guestbookEntryUserDetailBiolink = css.resolve`
   a:hover {
     color: rgba(50, 63, 203);
   }
-`
+`;
 export const guestbookEntryUserDetailTimestamp = css.resolve`
   span {
     display: block;
@@ -65,7 +65,7 @@ export const guestbookEntryUserDetailTimestamp = css.resolve`
     font-weight: 200;
     color: gray;
   }
-`
+`;
 export const guestbookEntryStory = css.resolve`
   div {
     flex-shrink: 0;
@@ -74,12 +74,12 @@ export const guestbookEntryStory = css.resolve`
     padding-right: 15px;
     white-space: pre-wrap;
   }
-`
+`;
 export const guestbookEntryShare = css.resolve`
   div {
     margin-bottom: 30px;
   }
-`
+`;
 export const guestbookEntryShareTwitterButton = css.resolve`
   a {
     display: inline-block;
@@ -87,7 +87,7 @@ export const guestbookEntryShareTwitterButton = css.resolve`
     height: 20px;
     position: relative;
   }
-`
+`;
 export const guestbookEntryShareTwitterButtonLogo1 = css.resolve`
   img {
     position: absolute;
@@ -95,7 +95,7 @@ export const guestbookEntryShareTwitterButtonLogo1 = css.resolve`
     height: 100%;
     opacity: 0.5;
   }
-`
+`;
 export const guestbookEntryShareTwitterButtonLogo2 = css.resolve`
   img {
     position: absolute;
@@ -107,4 +107,4 @@ export const guestbookEntryShareTwitterButtonLogo2 = css.resolve`
   img:hover {
     opacity: 1;
   }
-`
+`;

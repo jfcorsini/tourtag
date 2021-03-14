@@ -1,4 +1,4 @@
-import css from 'styled-jsx/css'
+import css from "styled-jsx/css";
 
 export const footer = css.resolve`
   flex-grow: 1;
@@ -11,7 +11,7 @@ export const footer = css.resolve`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 export const footerContent = css.resolve`
   div {
@@ -23,30 +23,30 @@ export const footerContent = css.resolve`
     max-width: 800px;
     width: 100%;
   }
-`
+`;
 
 export const footerColumn = css.resolve`
   div {
     flex-basis: 25%;
     padding-left: 70px;
   }
-`
+`;
 export const footerColumnFirst = css.resolve`
   div {
     font-size: 60% !important;
   }
-`
+`;
 export const footerColumnFirstURL = css.resolve`
   a {
     color: white !important;
   }
-`
+`;
 export const footerColumnList = css.resolve`
   ul {
     list-style-type: none;
     padding: 0;
   }
-`
+`;
 export const footerColumnListURL = css.resolve`
   a {
     color: white;
@@ -57,4 +57,4 @@ export const footerColumnListURL = css.resolve`
   a:hover {
     color: white;
   }
-`
+`;

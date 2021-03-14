@@ -6,7 +6,7 @@ import {
   footerColumnFirstURL,
   footerColumnList,
   footerColumnListURL,
-} from '../styles/footer.js'
+} from "../styles/footer.js";
 
 export default function Footer(props) {
   return (
@@ -181,5 +181,5 @@ export default function Footer(props) {
       {footerContent.styles}
       {footer.styles}
     </footer>
-  )
+  );
 }

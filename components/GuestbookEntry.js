@@ -10,7 +10,7 @@ import {
   guestbookEntryShareTwitterButton,
   guestbookEntryShareTwitterButtonLogo1,
   guestbookEntryShareTwitterButtonLogo2,
-} from '../styles/guestbookentry'
+} from "../styles/guestbookentry";
 
 export default function GuestbookEntry(props) {
   return (
@@ -46,9 +46,9 @@ export default function GuestbookEntry(props) {
       <div className={guestbookEntryShare.className}>
         <a
           href={`http://twitter.com/share?text=${encodeURIComponent(
-            props.story + ' @faunadb @zeithq'
+            props.story + " @faunadb @zeithq"
           )}&url=${encodeURIComponent(
-            'https://fauna.com'
+            "https://fauna.com"
           )}&hashtags=graphql,nextjs
                     `}
           target="_blank"
@@ -77,5 +77,5 @@ export default function GuestbookEntry(props) {
       {guestbookEntryUserDetailBiolink.styles}
       {guestbookEntryUserDetailTimestamp.styles}
     </>
-  )
+  );
 }

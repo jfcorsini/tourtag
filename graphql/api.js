@@ -1,16 +1,16 @@
-import useFetch from '../lib/useFetch'
+import useFetch from "../lib/useFetch";
 
 function getData(data) {
-  if (!data || data.errors) return null
-  return data.data
+  if (!data || data.errors) return null;
+  return data.data;
 }
 
 function getErrorMessage(error, data) {
-  if (error) return error.message
+  if (error) return error.message;
   if (data && data.errors) {
-    return data.errors[0].message
+    return data.errors[0].message;
   }
-  return null
+  return null;
 }
 
 /**
@@ -33,30 +33,30 @@ export const useGuestbookEntries = () => {
       }
       after
     }
-  }`
-  const size = 100
+  }`;
+  const size = 100;
   const { data, error } = useFetch(
     process.env.NEXT_PUBLIC_FAUNADB_GRAPHQL_ENDPOINT,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_FAUNADB_SECRET}`,
-        'Content-type': 'application/json',
-        Accept: 'application/json',
+        "Content-type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         query,
         variables: { size },
       }),
     }
-  )
+  );
 
   return {
     data: getData(data),
     errorMessage: getErrorMessage(error, data),
     error,
-  }
-}
+  };
+};
 
 /**
 |--------------------------------------------------
@@ -84,21 +84,21 @@ export const createGuestbookEntry = async (twitterHandle, story) => {
       twitter_handle
       story
     }
-  }`
+  }`;
 
   const res = await fetch(process.env.NEXT_PUBLIC_FAUNADB_GRAPHQL_ENDPOINT, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_FAUNADB_SECRET}`,
-      'Content-type': 'application/json',
-      Accept: 'application/json',
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify({
       query,
       variables: { twitterHandle, story },
     }),
-  })
-  const data = await res.json()
+  });
+  const data = await res.json();
 
-  return data
-}
+  return data;
+};

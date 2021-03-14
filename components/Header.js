@@ -1,4 +1,4 @@
-import { headerBanner, headerTitle } from '../styles/header'
+import { headerBanner, headerTitle } from "../styles/header";
 
 export default function Header(props) {
   return (
@@ -15,5 +15,5 @@ export default function Header(props) {
       {headerBanner.styles}
       {headerTitle.styles}
     </>
-  )
+  );
 }
