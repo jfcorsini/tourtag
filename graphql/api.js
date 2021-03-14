@@ -15,21 +15,25 @@ function getErrorMessage(error, data) {
 
 /**
 |--------------------------------------------------
-| This GraphQL query returns an array of Guestbook
+| This GraphQL query returns an array of tags
 | entries complete with both the provided and implicit
 | data attributes.
 |
 | Learn more about GraphQL: https://graphql.org/learn/
 |--------------------------------------------------
 */
-export const useGuestbookEntries = () => {
-  const query = `query Entries($size: Int) {
-    entries(_size: $size) {
+export const useTags = () => {
+  const query = `query Tags($size: Int) {
+    tags(_size: $size) {
       data {
         _id
         _ts
-        twitter_handle
-        story
+        identifier
+        isInTour
+        jsonData
+        departureTime
+        startPort
+        destinationPort
       }
       after
     }
@@ -60,8 +64,8 @@ export const useGuestbookEntries = () => {
 
 /**
 |--------------------------------------------------
-| This GraphQL mutation creates a new GuestbookEntry
-| with the requisite twitter handle and story arguments.
+| This GraphQL mutation creates a new Tag with the 
+| necessary arguments.
 |
 | It returns the stored data and includes the unique
 | identifier (_id) as well as _ts (time created).
@@ -73,16 +77,17 @@ export const useGuestbookEntries = () => {
 | Learn more about GraphQL mutations: https://graphql.org/learn/queries/#mutations
 |--------------------------------------------------
 */
-export const createGuestbookEntry = async (twitterHandle, story) => {
-  const query = `mutation CreateGuestbookEntry($twitterHandle: String!, $story: String!) {
-    createGuestbookEntry(data: {
-      twitter_handle: $twitterHandle,
-      story: $story
+export const createTag = async (identifier, startPort, destinationPort) => {
+  const query = `mutation createTag($identifier: String!, $isInTour: Boolean!, $startPort: Port!, $destinationPort: Port!, $jsonData: String!) {
+    createTag(data: {
+      identifier: $identifier,
+      startPort: $startPort,
+      destinationport: $destinationport,
+      jsonData: $jsonData,
+      isInTour: $isInTour,
     }) {
       _id
       _ts
-      twitter_handle
-      story
     }
   }`;
 
@@ -95,7 +100,13 @@ export const createGuestbookEntry = async (twitterHandle, story) => {
     },
     body: JSON.stringify({
       query,
-      variables: { twitterHandle, story },
+      variables: {
+        identifier,
+        startPort,
+        destinationPort,
+        isInTour: false,
+        jsonData: JSON.stringify([]),
+      },
     }),
   });
   const data = await res.json();

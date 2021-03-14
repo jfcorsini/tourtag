@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGuestbookEntries, createGuestbookEntry } from "../graphql/api";
+import { useTags, createTag } from "../graphql/api";
 import Header from "./Header";
 import GuestbookEntry from "./GuestbookEntry";
 import GuestbookEntryDivider from "./GuestbookEntryDivider";
@@ -14,55 +14,49 @@ import {
   heroEntries,
 } from "../styles/hero";
 
-function getEntries(data) {
-  return data ? data.entries.data.reverse() : [];
+function getTags(data) {
+  return data ? data.tags.data : [];
 }
 
 export default function Hero(props) {
-  const { data, errorMessage } = useGuestbookEntries();
+  const { data, errorMessage } = useTags();
   const [entries, setEntries] = useState([]);
-  const [twitterHandle, setTwitterHandle] = useState("");
-  const [story, setStory] = useState("");
+  const [tagIdentifier, setTagIdentifier] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // TODO: Allow use to choose start and destination ports
+  const startPort = "HEL";
+  const destinationPort = "TUR";
 
   useEffect(() => {
     if (!entries.length) {
-      setEntries(getEntries(data));
+      setEntries(getTags(data));
     }
   }, [data, entries.length]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (twitterHandle.trim().length === 0) {
+    if (tagIdentifier.trim().length === 0) {
       alert("Please provide a valid twitter handle :)");
       return;
     }
-    if (story.trim().length === 0) {
-      alert("No favorite memory? This cannot be!");
-      return;
-    }
     setSubmitting(true);
-    createGuestbookEntry(twitterHandle, story)
+    createTag(tagIdentifier, startPort, destinationPort)
       .then((data) => {
-        entries.unshift(data.data.createGuestbookEntry);
-        setTwitterHandle("");
-        setStory("");
+        entries.unshift(data.data.createTag);
+        setTagIdentifier("");
         setEntries(entries);
         setSubmitting(false);
       })
       .catch((error) => {
         console.log(`boo :( ${error}`);
-        alert("🤷‍♀️");
+        alert("Something bad happened 🤷‍♀️");
         setSubmitting(false);
       });
   }
 
-  function handleStoryChange(event) {
-    setStory(event.target.value);
-  }
-
-  function handleTwitterChange(event) {
-    setTwitterHandle(event.target.value.replace("@", ""));
+  function handleTagIdentifier(event) {
+    setTagIdentifier(event.target.value);
   }
 
   return (
@@ -74,21 +68,12 @@ export default function Hero(props) {
             className={heroFormFieldset.className}
             disabled={submitting && "disabled"}
           >
-            <textarea
-              className={heroFormTextArea.className}
-              rows="5"
-              cols="50"
-              name="story"
-              placeholder="What is your favorite memory as a developer?"
-              onChange={handleStoryChange}
-              value={story}
-            />
             <input
               className={heroFormTwitterInput.className}
               type="text"
-              placeholder="twitter handle (no '@')"
-              onChange={handleTwitterChange}
-              value={twitterHandle}
+              placeholder="Tag identifier"
+              onChange={handleTagIdentifier}
+              value={tagIdentifier}
             />
             <input
               className={heroFormSubmitButton.className}
