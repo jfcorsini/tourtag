@@ -181,6 +181,7 @@ export const updateTag = async (currentTag, newTagState) => {
     body: JSON.stringify({
       query,
       variables: {
+        id: _id,
         ...tag,
         ...newTagState,
       },

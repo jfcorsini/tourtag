@@ -24,6 +24,19 @@ export default function Hero(props) {
   const [tagIdentifier, setTagIdentifier] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const onUpdateTag = useCallback(
+    (updatedTag) => {
+      const newTags = tags.map((t) => {
+        if (t._id === updatedTag._id) {
+          return updatedTag;
+        }
+        return t;
+      });
+      setTags(newTags);
+    },
+    [tags]
+  );
+
   useEffect(() => {
     if (!tags.length) {
       setTags(getTags(data));
@@ -73,7 +86,7 @@ export default function Hero(props) {
             const date = new Date(tag._ts / 1000);
             return (
               <div key={tag._id}>
-                <Tag tagData={tag} date={date} />
+                <Tag tagData={tag} date={date} onUpdateTag={onUpdateTag} />
                 <TagDivider />
               </div>
             );
