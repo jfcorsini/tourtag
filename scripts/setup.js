@@ -50,23 +50,21 @@ readline.question(`Please provide the FaunaDB admin key\n`, (adminKey) => {
       return client
         .query(
           q.CreateRole({
-            name: "GuestbookRole",
+            name: "TagRole",
             privileges: [
               {
-                resource: q.Collection("GuestbookEntry"),
+                resource: q.Collection("Tag"),
                 actions: { read: true, write: true, create: true },
               },
               {
-                resource: q.Index("entries"),
+                resource: q.Index("tags"),
                 actions: { read: true },
               },
             ],
           })
         )
         .then((res) => {
-          console.log(
-            "2. Successfully created role to read and write guestbook entries"
-          );
+          console.log("2. Successfully created role to read and write tags");
         })
         .catch((err) => {
           if (err.toString().includes("instance already exists")) {
@@ -87,7 +85,7 @@ readline.question(`Please provide the FaunaDB admin key\n`, (adminKey) => {
       return client
         .query(
           q.CreateKey({
-            role: q.Role("GuestbookRole"),
+            role: q.Role("TagRole"),
           })
         )
         .then((res) => {
