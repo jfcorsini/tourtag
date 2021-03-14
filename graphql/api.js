@@ -62,6 +62,39 @@ export const useTags = () => {
   };
 };
 
+export const getTagById = async (id) => {
+  const query = `query getTagById($id: ID!) {
+    findTagByID(id: $id) {
+      _id
+      _ts
+      identifier
+      isInTour
+      jsonData
+      departureTime
+      startPort
+      destinationPort
+    }
+  }`;
+
+  const res = await fetch(process.env.NEXT_PUBLIC_FAUNADB_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_FAUNADB_SECRET}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        id,
+      },
+    }),
+  });
+  const data = await res.json();
+
+  return data;
+};
+
 /**
 |--------------------------------------------------
 | This GraphQL mutation creates a new Tag with the 
