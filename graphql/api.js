@@ -82,7 +82,7 @@ export const createTag = async (identifier, startPort, destinationPort) => {
     createTag(data: {
       identifier: $identifier,
       startPort: $startPort,
-      destinationport: $destinationport,
+      destinationPort: $destinationPort,
       jsonData: $jsonData,
       isInTour: $isInTour,
     }) {
