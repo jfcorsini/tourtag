@@ -13,7 +13,7 @@ export const guestbookEntryUserDetail = css.resolve`
   div {
     flex-shrink: 0;
     flex-basis: 30%;
-    text-align: center;
+    text-align: left;
   }
 `;
 export const guestbookEntryUserDetailAvatar = css.resolve`

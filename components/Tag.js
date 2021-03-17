@@ -111,17 +111,17 @@ export default function Tag({ tagData, date, onUpdateTag }) {
     <>
       <div className={guestbookEntry.className}>
         <div className={guestbookEntryUserDetail.className}>
+          <p style={{ fontSize: "18px" }}>
+            <b>{tagData.identifier}</b>
+          </p>
+          <p style={{ fontSize: "12px" }}>
+            Tag ID: <b>{tagData._id}</b>
+          </p>
           <span className={guestbookEntryUserDetailTimestamp.className}>
             Created on {date.toDateString()}
           </span>
         </div>
         <div className={guestbookEntryStory.className}>
-          <p>
-            Tag ID: <b>{tagData._id}</b>
-          </p>
-          <p>
-            Tag identifier: <b>{tagData.identifier}</b>
-          </p>
           <UpdateTagForm tagData={tagData} onUpdateTag={onUpdateTag} />
         </div>
       </div>
