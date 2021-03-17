@@ -38,6 +38,8 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
 
   const allowedCurrentPorts = lastPort ? allowedPorts[lastPort] : [startPort];
 
+  const canFinishTour = lastPort === destinationPort;
+
   const handleUpdatingTag = (newTagData) => {
     setSubmitting(true);
     updateTag(tagData, newTagData)
@@ -85,6 +87,16 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
     });
   };
 
+  const handleFinishTour = () => {
+    handleUpdatingTag({
+      isInTour: false,
+      startPort: null,
+      destinationPort: null,
+      jsonData: JSON.stringify([]),
+      departureTime: null,
+    });
+  };
+
   const handleDepartureTime = useCallback(
     (momentDate) => {
       if (momentDate) {
@@ -98,11 +110,17 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
     return (
       <>
         <p>
-          Start port: <b>{existingPorts[tagData.startPort]}</b>
+          Tour:{" "}
+          <b>
+            {existingPorts[tagData.startPort]} -{">"}{" "}
+            {existingPorts[tagData.destinationPort]}
+          </b>
         </p>
-        <p>
-          Destination port: <b>{existingPorts[tagData.destinationPort]}</b>
-        </p>
+        {lastPort && (
+          <p>
+            Current port: <b>{existingPorts[lastPort]}</b>
+          </p>
+        )}
         <fieldset disabled={submitting && "disabled"}>
           <form onSubmit={handleUpdateTour}>
             <label>
@@ -132,6 +150,9 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
             <input type="submit" value="Update tour" />
           </form>
         </fieldset>
+        {canFinishTour && (
+          <button onClick={handleFinishTour}>Finish tour</button>
+        )}
       </>
     );
   }
