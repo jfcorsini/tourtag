@@ -1,6 +1,9 @@
 import { useCallback, useState } from "react";
+import moment from "moment";
+import DateTime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 import { updateTag } from "../graphql/api";
-import { existingPorts } from "../lib/ports";
+import { existingPorts, allowedPorts } from "../lib/ports";
 import {
   guestbookEntry,
   guestbookEntryUserDetail,
@@ -17,45 +20,78 @@ import {
 
 function UpdateTagForm({ tagData, onUpdateTag }) {
   const [submitting, setSubmitting] = useState(false);
-  const [startPort, setStartPort] = useState("HEL");
-  const [destinationPort, setDestinationPort] = useState("TUR");
+  const [startPort, setStartPort] = useState(tagData.startPort ?? "HEL");
+  const [destinationPort, setDestinationPort] = useState(
+    tagData.destinationPort ?? "TUR"
+  );
+  const [departureTime, setDepartureTime] = useState(
+    tagData.departureTime ? moment(tagData.departureTime) : null
+  );
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (startPort === destinationPort) {
-      alert("Start port must be different than destination port");
-      return;
-    }
+  // Contain array of objects with keys 'timestamp' and 'port'
+  const jsonData = JSON.parse(tagData.jsonData);
 
+  // The first item will be the newest one
+  const sortedData = jsonData.sort((a, b) => b.timestamp - a.timestamp);
+  const lastPort = sortedData.length > 0 ? sortedData[0].port : undefined;
+  const [currentPort, setCurrentPort] = useState(lastPort);
+
+  const allowedCurrentPorts = lastPort ? allowedPorts[lastPort] : [startPort];
+
+  const handleUpdatingTag = (newTagData) => {
     setSubmitting(true);
-    updateTag(tagData, {
-      isInTour: true,
-      startPort,
-      destinationPort,
-    })
+    updateTag(tagData, newTagData)
       .then((data) => {
         setSubmitting(false);
         onUpdateTag(data.data.updateTag);
       })
       .catch((error) => {
-        console.log(`boo :( ${error}`);
+        console.log(`Error when updating tag :( ${error}`);
         alert("Something bad happened 🤷‍♀️");
         setSubmitting(false);
       });
   };
 
-  const handleStartPort = useCallback(
-    (event) => {
-      setStartPort(event.target.value);
-    },
-    [setStartPort]
-  );
+  const handleSubmitNewTour = (event) => {
+    event.preventDefault();
+    if (startPort === destinationPort) {
+      return alert("Start port must be different than destination port");
+    }
 
-  const handleDestinationPort = useCallback(
-    (event) => {
-      setDestinationPort(event.target.value);
+    setSubmitting(true);
+    handleUpdatingTag({
+      isInTour: true,
+      startPort,
+      destinationPort,
+    });
+  };
+
+  const handleUpdateTour = (event) => {
+    event.preventDefault();
+
+    const newJsonData = JSON.parse(tagData.jsonData);
+
+    // If changing the currentPort
+    if (lastPort !== currentPort) {
+      newJsonData.push({
+        port: currentPort,
+        timestamp: moment().unix(),
+      });
+    }
+
+    handleUpdatingTag({
+      jsonData: JSON.stringify(newJsonData),
+      departureTime: moment(departureTime),
+    });
+  };
+
+  const handleDepartureTime = useCallback(
+    (momentDate) => {
+      if (momentDate) {
+        setDepartureTime(momentDate);
+      }
     },
-    [setDestinationPort]
+    [setDepartureTime]
   );
 
   if (tagData.isInTour) {
@@ -67,6 +103,35 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
         <p>
           Destination port: <b>{existingPorts[tagData.destinationPort]}</b>
         </p>
+        <fieldset disabled={submitting && "disabled"}>
+          <form onSubmit={handleUpdateTour}>
+            <label>
+              Update current port
+              <br />
+              <select
+                onChange={(e) => setCurrentPort(e.target.value)}
+                value={currentPort}
+              >
+                <option disabled selected value>
+                  -- select an option --
+                </option>
+                {allowedCurrentPorts.map((portKey) => (
+                  <option key={portKey} value={portKey}>
+                    {existingPorts[portKey]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <br />
+            <br />
+            <label>
+              Set departure time
+              <DateTime value={departureTime} onChange={handleDepartureTime} />
+            </label>
+            <br />
+            <input type="submit" value="Update tour" />
+          </form>
+        </fieldset>
       </>
     );
   }
@@ -74,11 +139,14 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
   return (
     <>
       <h3>Tag not in tour. Create new tour</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitNewTour}>
         <fieldset disabled={submitting && "disabled"}>
           <label>
             Select starting port
-            <select onChange={handleStartPort} value={startPort}>
+            <select
+              onChange={(e) => setStartPort(e.target.value)}
+              value={startPort}
+            >
               {Object.keys(existingPorts).map((portKey) => (
                 <option key={portKey} value={portKey}>
                   {existingPorts[portKey]}
@@ -89,7 +157,10 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
           <br />
           <label>
             Select destination port
-            <select onChange={handleDestinationPort} value={destinationPort}>
+            <select
+              onChange={(e) => setDestinationPort(e.target.value)}
+              value={destinationPort}
+            >
               {Object.keys(existingPorts).map((portKey) => (
                 <option key={portKey} value={portKey}>
                   {existingPorts[portKey]}
@@ -98,7 +169,7 @@ function UpdateTagForm({ tagData, onUpdateTag }) {
             </select>
           </label>
           <br />
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Create tour" />
         </fieldset>
       </form>
     </>

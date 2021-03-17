@@ -152,13 +152,14 @@ export const createTag = async (identifier) => {
 export const updateTag = async (currentTag, newTagState) => {
   const { _id, _ts, ...tag } = currentTag;
 
-  const query = `mutation updateTag($id: ID!, $identifier: String!, $isInTour: Boolean!, $jsonData: String!, $startPort: Port, $destinationPort: Port) {
+  const query = `mutation updateTag($id: ID!, $identifier: String!, $isInTour: Boolean!, $jsonData: String!, $startPort: Port, $destinationPort: Port, $departureTime: Time) {
     updateTag(id: $id, data: {
       identifier: $identifier,
       jsonData: $jsonData,
       isInTour: $isInTour,
       startPort: $startPort,
       destinationPort: $destinationPort,
+      departureTime: $departureTime,
     }) {
       _id
       _ts

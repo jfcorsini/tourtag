@@ -9,8 +9,10 @@
     "setup": "node ./scripts/setup.js"
   },
   "dependencies": {
+    "moment": "^2.29.1",
     "next": "latest",
     "react": "^16.10.2",
+    "react-datetime": "^3.0.4",
     "react-dom": "^16.10.2"
   },
   "devDependencies": {
