@@ -15,7 +15,7 @@ import {
 } from "../styles/hero";
 
 function getTags(data) {
-  return data ? data.tags.data.reverse() : [];
+  return data ? data.tags.data : [];
 }
 
 export default function Hero(props) {
@@ -52,7 +52,7 @@ export default function Hero(props) {
     setSubmitting(true);
     createTag(tagIdentifier)
       .then((data) => {
-        tags.unshift(data.data.createTag);
+        tags.push(data.data.createTag);
         setTagIdentifier("");
         setTags(tags);
         setSubmitting(false);
